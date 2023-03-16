@@ -25,10 +25,25 @@ func main() {
 		TaskQueue: "TASK_QUEUE",
 	}
 
-	we, err := c.ExecuteWorkflow(context.Background(), options, terraform.PlanWorkflow, []string{`provider "aws" {}`, `
-resource "aws_s3_bucket" "a" {
+	tf := []string{
+		`provider "aws" {}`,
+		`resource "aws_s3_bucket" "a" {
 	bucket = "test-bucket"
-}`})
+}`}
+
+	we, err := c.ExecuteWorkflow(context.Background(), options, terraform.PlanWorkflow, tf)
+	if err != nil {
+		panic(err)
+	}
+
+	err = we.Get(context.Background(), &result)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Println(result)
+
+	we, err = c.ExecuteWorkflow(context.Background(), options, terraform.ApplyWorkflow, tf)
 	if err != nil {
 		panic(err)
 	}

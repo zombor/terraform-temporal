@@ -12,7 +12,7 @@ import (
 	"github.com/hashicorp/terraform-exec/tfexec"
 )
 
-func Plan(path string) (string, error) {
+func Apply(path string) (string, error) {
 	i := install.NewInstaller()
 	execPath, err := i.Ensure(context.Background(), []src.Source{
 		&releases.ExactVersion{
@@ -40,7 +40,7 @@ func Plan(path string) (string, error) {
 		return "", err
 	}
 
-	_, err = tf.Plan(context.Background(), tfexec.Refresh(true))
+	err = tf.Apply(context.Background(), tfexec.Refresh(true))
 
 	return buff.String(), err
 }

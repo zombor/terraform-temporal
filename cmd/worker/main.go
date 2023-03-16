@@ -18,7 +18,9 @@ func main() {
 
 	w := worker.New(c, "TASK_QUEUE", worker.Options{})
 	w.RegisterWorkflow(terraform.PlanWorkflow)
+	w.RegisterWorkflow(terraform.ApplyWorkflow)
 	w.RegisterActivity(terraform.Plan)
+	w.RegisterActivity(terraform.Apply)
 	w.RegisterActivity(os.Write)
 	w.RegisterActivity(os.Delete)
 
